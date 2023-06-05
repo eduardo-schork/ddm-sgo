@@ -3,6 +3,7 @@ package com.ddm.sgo.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,8 @@ public class TeamListItemAdapter extends RecyclerView.Adapter<TeamListItemAdapte
 
         String infoText = "Tamanho da equipe: " + projectModel.numberOfMembers + " integrantes.";
 
+        holder.imageButton.setVisibility(View.INVISIBLE);
+
         holder.nameText.setText(projectModel.name);
         holder.infoText.setText(infoText);
 
@@ -67,9 +70,11 @@ public class TeamListItemAdapter extends RecyclerView.Adapter<TeamListItemAdapte
         TextView nameText;
         TextView infoText;
 
+        ImageButton imageButton;
+
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            imageButton = itemView.findViewById(R.id.open_project_button);
             nameText = itemView.findViewById(R.id.name_text);
             infoText = itemView.findViewById(R.id.info_text);
         }

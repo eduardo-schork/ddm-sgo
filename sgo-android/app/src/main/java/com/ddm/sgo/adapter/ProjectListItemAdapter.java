@@ -3,6 +3,7 @@ package com.ddm.sgo.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,11 +16,12 @@ import java.util.List;
 
 public class ProjectListItemAdapter extends RecyclerView.Adapter<ProjectListItemAdapter.ItemViewHolder> {
     private final List<Project> itemList;
+    private final long lastCheckinProjectId;
     private OnClickListener onClickListener;
 
-
-    public ProjectListItemAdapter(List<Project> itemList) {
+    public ProjectListItemAdapter(List<Project> itemList, long lastCheckinProjectId) {
         this.itemList = itemList;
+        this.lastCheckinProjectId = lastCheckinProjectId;
     }
 
     @NonNull
@@ -35,6 +37,10 @@ public class ProjectListItemAdapter extends RecyclerView.Adapter<ProjectListItem
         Project projectModel = itemList.get(position);
 
         String infoText = projectModel.city + " - " + projectModel.state + ", " + projectModel.country;
+
+        if (projectModel.uid == lastCheckinProjectId) {
+            holder.imageView.setVisibility(View.VISIBLE);
+        }
 
         holder.nameText.setText(projectModel.name);
         holder.infoText.setText(infoText);
@@ -65,10 +71,12 @@ public class ProjectListItemAdapter extends RecyclerView.Adapter<ProjectListItem
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView nameText;
         TextView infoText;
+        ImageView imageView;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            imageView = itemView.findViewById(R.id.alertIconView);
             nameText = itemView.findViewById(R.id.name_text);
             infoText = itemView.findViewById(R.id.info_text);
         }

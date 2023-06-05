@@ -138,7 +138,7 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
             Bitmap mBitmap = null;
             try {
                 mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
-                ImageView imageView = findViewById(R.id.imageView);
+                ImageView imageView = findViewById(R.id.alertIconView);
                 imageView.setImageBitmap(mBitmap);
             } catch (IOException e) {
                 throw new RuntimeException(e);

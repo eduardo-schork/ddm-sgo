@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.ddm.sgo.R;
 import com.ddm.sgo.adapter.ProjectListItemAdapter;
 import com.ddm.sgo.databinding.FragmentProjectListBinding;
+import com.ddm.sgo.infra.local_storage.LocalStorage;
 import com.ddm.sgo.model.Project;
 import com.ddm.sgo.repositories.ProjectRepository;
 import com.ddm.sgo.ui.project_menu.ProjectMenuActivity;
@@ -30,8 +32,9 @@ public class ProjectListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private void setProjectListOnView() {
+        long lastCheckinProjectId = Long.parseLong(LocalStorage.getInstance(getContext()).getValue(getString(R.string.last_checkin_id)));
         List<Project> projectList = ProjectRepository.getInstance(getContext()).getProjectList();
-        ProjectListItemAdapter adapter = new ProjectListItemAdapter(projectList);
+        ProjectListItemAdapter adapter = new ProjectListItemAdapter(projectList, lastCheckinProjectId);
 
         adapter.setOnClickListener(new ProjectListItemAdapter.OnClickListener() {
             @Override
