@@ -7,7 +7,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.util.Log;
 
-public class Geolocation {
+public class GeolocationPort {
     static int LOCATION_REFRESH_TIME = 15000; // 15 seconds to update
     static int LOCATION_REFRESH_DISTANCE = 0; // 500 meters to update
     private static Location currentLocation;
@@ -18,12 +18,12 @@ public class Geolocation {
         }
     };
     private static LocationManager locationManager;
-    private static Geolocation instance;
+    private static GeolocationPort instance;
 
     @SuppressLint("MissingPermission")
-    public static Geolocation getInstance(Context context) {
+    public static GeolocationPort getInstance(Context context) {
         if (instance == null) {
-            instance = new Geolocation();
+            instance = new GeolocationPort();
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, locationListener);
         }
@@ -37,7 +37,7 @@ public class Geolocation {
             Log.d("getLongitude", Double.toString(currentLocation.getLongitude()));
             return currentLocation;
         }
-        
+
         return null;
     }
 }

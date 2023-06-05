@@ -13,7 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.ddm.sgo.databinding.ActivityMainBinding;
-import com.ddm.sgo.infra.geolocation.Geolocation;
+import com.ddm.sgo.infra.geolocation.GeolocationPort;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 //        TODO refactor this \/
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+        }
+
+//        REQUEST LOCATION PERMISSIONS
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
@@ -50,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Geolocation.getInstance(getApplicationContext());
+        GeolocationPort.getInstance(getApplicationContext());
     }
 
     @Override

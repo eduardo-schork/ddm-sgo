@@ -1,10 +1,15 @@
 package com.ddm.sgo.ui.appointment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -13,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ddm.sgo.MainActivity;
 import com.ddm.sgo.R;
-import com.ddm.sgo.infra.geolocation.Geolocation;
+import com.ddm.sgo.infra.geolocation.GeolocationPort;
 import com.ddm.sgo.infra.local_storage.LocalStorage;
 import com.ddm.sgo.model.Appointment;
 import com.ddm.sgo.model.Project;
@@ -24,10 +29,13 @@ import com.ddm.sgo.repositories.TeamRepository;
 import com.ddm.sgo.shared.toast_port.ToastPort;
 import com.ddm.sgo.util.date_parser.DateParser;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
 public class AppointmentCreateFormActivity extends AppCompatActivity {
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CAMERA = 100;
     TextView appointmentDateText;
     CheckBox geolocationCheckBox;
     RadioGroup presentTeamRadioGroup;
@@ -35,6 +43,7 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
     List<Team> teamsList;
     long currentTime;
     String appointmentType;
+    String mCurrentPhotoPath;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -88,7 +97,7 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
 
     private void onCreateAppointmentHandler() {
         try {
-            Location currentLocation = Geolocation.getInstance(getApplicationContext()).getCurrentLocation();
+            Location currentLocation = GeolocationPort.getInstance(getApplicationContext()).getCurrentLocation();
 
             Appointment newAppointment = new Appointment();
 
@@ -121,6 +130,22 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
         }
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Uri chosenImageUri = data.getData();
+
+            Bitmap mBitmap = null;
+            try {
+                mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
+                ImageView imageView = findViewById(R.id.imageView);
+                imageView.setImageBitmap(mBitmap);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +153,15 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
 
         loadData();
 
-        Geolocation.getInstance(getApplicationContext()).getCurrentLocation();
+        Button btnCapture = findViewById(R.id.takePictureButton);
+        btnCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                photoPickerIntent.setType("image/*");
+                startActivityForResult(photoPickerIntent, 1);
+            }
+        });
 
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

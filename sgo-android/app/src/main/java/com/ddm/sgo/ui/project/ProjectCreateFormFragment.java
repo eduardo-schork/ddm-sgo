@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.ddm.sgo.R;
 import com.ddm.sgo.databinding.FragmentProjectCreateFormBinding;
-import com.ddm.sgo.infra.geolocation.Geolocation;
+import com.ddm.sgo.infra.geolocation.GeolocationPort;
 import com.ddm.sgo.model.Project;
 import com.ddm.sgo.repositories.ProjectRepository;
 import com.ddm.sgo.shared.toast_port.ToastPort;
@@ -34,7 +34,7 @@ public class ProjectCreateFormFragment extends Fragment {
 
         long currentTime = DateParser.getCurrentMilliseconds();
 
-        Location location = Geolocation.getInstance(getContext()).getCurrentLocation();
+        Location location = GeolocationPort.getInstance(getContext()).getCurrentLocation();
 
         Project newProject = new Project(
                 nameInput.getText().toString(),
