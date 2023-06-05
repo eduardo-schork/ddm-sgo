@@ -17,6 +17,9 @@ public interface ProjectDAO {
     @Query("SELECT * FROM projects WHERE uid IN (:projectIds)")
     List<Project> loadAllByIds(int[] projectIds);
 
+    @Query("SELECT * FROM projects WHERE synchronized_at = 0")
+    List<Project> getAllNotSynced();
+
     @Query("SELECT * FROM projects WHERE uid = :uid LIMIT 1")
     Project findById(long uid);
 

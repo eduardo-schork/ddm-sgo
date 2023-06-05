@@ -17,6 +17,9 @@ public interface AppointmentDAO {
     @Query("SELECT * FROM appointments WHERE uid IN (:appointmentIds)")
     List<Appointment> loadAllByIds(int[] appointmentIds);
 
+    @Query("SELECT * FROM appointments WHERE synchronized_at = 0")
+    List<Appointment> getAllNotSynced();
+
     @Query("SELECT * FROM appointments WHERE uid = :uid LIMIT 1")
     Appointment findById(long uid);
 

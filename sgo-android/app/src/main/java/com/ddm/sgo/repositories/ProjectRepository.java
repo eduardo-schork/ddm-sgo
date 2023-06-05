@@ -29,11 +29,16 @@ public class ProjectRepository {
         return this.projectDAO.findById(uid);
     }
 
+
     public void createProject(Project newProject) {
         this.projectDAO.insertAll(newProject);
     }
 
     public List<Project> getProjectList() {
         return projectDAO.getAll();
+    }
+
+    public List<Project> getProjectListNotSynced() {
+        return projectDAO.getAllNotSynced();
     }
 }

@@ -31,4 +31,8 @@ public class TeamRepository {
     public List<Team> getTeamList() {
         return this.teamDAO.getAll();
     }
+
+    public List<Team> getTeamListNotSynced() {
+        return teamDAO.getAllNotSynced();
+    }
 }

@@ -38,9 +38,9 @@ public class SynchronizationQueueFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private void loadDataOnView() {
-        List<Team> teamList = TeamRepository.getInstance(getContext()).getTeamList();
-        List<Project> projectList = ProjectRepository.getInstance(getContext()).getProjectList();
-        List<Appointment> appointmentList = AppointmentRepository.getInstance(getContext()).getAppointmentList();
+        List<Team> teamList = TeamRepository.getInstance(getContext()).getTeamListNotSynced();
+        List<Project> projectList = ProjectRepository.getInstance(getContext()).getProjectListNotSynced();
+        List<Appointment> appointmentList = AppointmentRepository.getInstance(getContext()).getAppointmentListNotSynced();
 
         String pendingStatusText = "PENDENTE";
 

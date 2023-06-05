@@ -32,7 +32,11 @@ public class ProjectListFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private void setProjectListOnView() {
-        long lastCheckinProjectId = Long.parseLong(LocalStorage.getInstance(getContext()).getValue(getString(R.string.last_checkin_id)));
+        String storageProjectId = LocalStorage.getInstance(getContext()).getValue(getString(R.string.last_checkin_id));
+        long lastCheckinProjectId = 0;
+        if (storageProjectId != null) {
+            lastCheckinProjectId = Long.parseLong(storageProjectId);
+        }
         List<Project> projectList = ProjectRepository.getInstance(getContext()).getProjectList();
         ProjectListItemAdapter adapter = new ProjectListItemAdapter(projectList, lastCheckinProjectId);
 

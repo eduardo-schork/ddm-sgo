@@ -36,4 +36,9 @@ public class AppointmentRepository {
     public List<Appointment> getAppointmentList() {
         return appointmentDAO.getAll();
     }
+
+    public List<Appointment> getAppointmentListNotSynced() {
+        return appointmentDAO.getAllNotSynced();
+    }
+
 }
