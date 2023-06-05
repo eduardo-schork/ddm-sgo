@@ -41,6 +41,10 @@ public class Appointment {
     public Bitmap image;
 
     @Nullable
+    @ColumnInfo(name = "image_path")
+    public String imagePath;
+
+    @Nullable
     @ColumnInfo(name = "synchronized_at")
     public long synchronizedAt;
 

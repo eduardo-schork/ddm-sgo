@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class GeolocationPort {
     static int LOCATION_REFRESH_TIME = 15000; // 15 seconds to update
-    static int LOCATION_REFRESH_DISTANCE = 0; // 500 meters to update
+    static int LOCATION_REFRESH_DISTANCE = 0; // meters to update
     private static Location currentLocation;
     private static final LocationListener locationListener = new LocationListener() {
         @Override

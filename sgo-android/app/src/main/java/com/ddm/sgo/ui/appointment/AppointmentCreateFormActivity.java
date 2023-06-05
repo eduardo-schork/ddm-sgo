@@ -15,6 +15,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.ddm.sgo.MainActivity;
 import com.ddm.sgo.R;
@@ -43,7 +44,7 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
     List<Team> teamsList;
     long currentTime;
     String appointmentType;
-    String mCurrentPhotoPath;
+    String currentPhotoPath;
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -91,26 +92,56 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
             presentTeamRadioGroup.addView(radioButtons[i]);
         }
 
+
         Button createAppointmentButton = findViewById(R.id.createAppointmentButton);
         createAppointmentButton.setOnClickListener(v -> onCreateAppointmentHandler());
+
+        Button btnCapture = findViewById(R.id.takePictureButton);
+        if (projectData.shouldPointImage) {
+            btnCapture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                    photoPickerIntent.setType("image/*");
+                    startActivityForResult(photoPickerIntent, 1);
+                }
+            });
+
+        } else {
+            btnCapture.setVisibility(View.INVISIBLE);
+
+            CardView pictureCardView = findViewById(R.id.pictureCardView);
+            pictureCardView.setVisibility(View.INVISIBLE);
+
+            TextView takePictureText = findViewById(R.id.takePictureText);
+            takePictureText.setVisibility(View.INVISIBLE);
+        }
     }
+
+    private Appointment createAppointmentObject() {
+        Location currentLocation = GeolocationPort.getInstance(getApplicationContext()).getCurrentLocation();
+
+        Appointment newAppointment = new Appointment();
+
+        newAppointment.presentTeamUid = presentTeamRadioGroup.getCheckedRadioButtonId();
+        newAppointment.date = currentTime;
+        newAppointment.projectUid = projectData.uid;
+        newAppointment.type = appointmentType;
+        newAppointment.createdAt = DateParser.getCurrentMilliseconds();
+        newAppointment.imagePath = currentPhotoPath;
+
+        if (projectData.shouldPointGeolocation) {
+            newAppointment.latitude = currentLocation.getLatitude();
+            newAppointment.longitude = currentLocation.getLongitude();
+        }
+
+        return newAppointment;
+    }
+
 
     private void onCreateAppointmentHandler() {
         try {
-            Location currentLocation = GeolocationPort.getInstance(getApplicationContext()).getCurrentLocation();
-
-            Appointment newAppointment = new Appointment();
-
-            newAppointment.presentTeamUid = presentTeamRadioGroup.getCheckedRadioButtonId();
-            newAppointment.date = currentTime;
-            newAppointment.projectUid = projectData.uid;
-            newAppointment.type = appointmentType;
-            newAppointment.createdAt = DateParser.getCurrentMilliseconds();
-
-            if (projectData.shouldPointGeolocation) {
-                newAppointment.latitude = currentLocation.getLatitude();
-                newAppointment.longitude = currentLocation.getLongitude();
-            }
+            Appointment newAppointment = createAppointmentObject();
 
             AppointmentRepository.getInstance(getApplicationContext()).createAppointment(newAppointment);
 
@@ -140,6 +171,7 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
                 mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), chosenImageUri);
                 ImageView imageView = findViewById(R.id.alertIconView);
                 imageView.setImageBitmap(mBitmap);
+                currentPhotoPath = chosenImageUri.getPath();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -153,25 +185,15 @@ public class AppointmentCreateFormActivity extends AppCompatActivity {
 
         loadData();
 
-        Button btnCapture = findViewById(R.id.takePictureButton);
-        btnCapture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, 1);
-            }
-        });
-
         assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (Objects.equals(appointmentType, getString(R.string.appointment_checkin))) {
-            getSupportActionBar().setTitle("Entrada na obra");
+            getSupportActionBar().setTitle("Entrada no projeto");
         }
 
         if (Objects.equals(appointmentType, getString(R.string.appointment_checkout))) {
-            getSupportActionBar().setTitle("Saída da obra");
+            getSupportActionBar().setTitle("Saída do projeto");
         }
 
         initializeComponents();
