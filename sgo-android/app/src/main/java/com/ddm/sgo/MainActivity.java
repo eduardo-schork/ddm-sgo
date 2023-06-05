@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home,
+                R.id.navigation_maps_view,
                 R.id.navigation_project_list,
                 R.id.navigation_team_list,
                 R.id.navigation_synchronization_queue

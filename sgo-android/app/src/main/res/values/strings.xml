@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SGO</string>
     <string name="title_home">Home</string>
+    <string name="title_maps_view">Mapa</string>
     <string name="title_project_list">Projetos</string>
     <string name="title_team_list">Equipes</string>
     <string name="title_synchronization_queue">Sincronização</string>

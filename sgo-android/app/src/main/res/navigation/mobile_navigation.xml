@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/navigation_project_list">
-
-    <!--    <fragment-->
-    <!--        android:id="@+id/navigation_home"-->
-    <!--        android:name="com.ddm.sgo.ui.home.HomeFragment"-->
-    <!--        android:label="@string/title_home"-->
-    <!--        tools:layout="@layout/fragment_home" />-->
-
     <fragment
         android:id="@+id/navigation_project_list"
         android:name="com.ddm.sgo.ui.project.ProjectListFragment"
@@ -22,6 +15,12 @@
         android:name="com.ddm.sgo.ui.team.TeamListFragment"
         android:label="@string/title_team_list"
         tools:layout="@layout/fragment_team_list" />
+
+    <fragment
+        android:id="@+id/navigation_maps_view"
+        android:name="com.ddm.sgo.ui.maps.MapsViewFragment"
+        android:label="@string/title_maps_view"
+        tools:layout="@layout/fragment_maps_view" />
 
     <fragment
         android:id="@+id/navigation_synchronization_queue"
