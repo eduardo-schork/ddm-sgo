@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SGO</string>
+    <string name="title_home">Home</string>
+    <string name="title_project_list">Projetos</string>
+    <string name="title_team_list">Equipes</string>
+    <string name="title_synchronization_queue">Sincronização</string>
+    <string name="project_create_success">Projeto criado com sucesso!</string>
+    <string name="project_create_error">Não foi possível criar o projeto.</string>
+
+    <string name="save">Salvar</string>
+
+    <string name="appointment_checkin">CHECKIN</string>
+    <string name="appointment_checkout">CHECKOUT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

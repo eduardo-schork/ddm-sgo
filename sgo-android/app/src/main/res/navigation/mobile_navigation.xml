@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_project_list">
+
+    <!--    <fragment-->
+    <!--        android:id="@+id/navigation_home"-->
+    <!--        android:name="com.ddm.sgo.ui.home.HomeFragment"-->
+    <!--        android:label="@string/title_home"-->
+    <!--        tools:layout="@layout/fragment_home" />-->
+
+    <fragment
+        android:id="@+id/navigation_project_list"
+        android:name="com.ddm.sgo.ui.project.ProjectListFragment"
+        android:label="@string/title_project_list"
+        tools:layout="@layout/fragment_project_list" />
+
+    <fragment
+        android:id="@+id/navigation_team_list"
+        android:name="com.ddm.sgo.ui.team.TeamListFragment"
+        android:label="@string/title_team_list"
+        tools:layout="@layout/fragment_team_list" />
+
+    <fragment
+        android:id="@+id/navigation_synchronization_queue"
+        android:name="com.ddm.sgo.ui.synchronization.SynchronizationQueueFragment"
+        android:label="@string/title_synchronization_queue"
+        tools:layout="@layout/fragment_synchronization_queue" />
+</navigation>
