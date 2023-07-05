@@ -38,6 +38,10 @@ public class ProjectRepository {
         return projectDAO.getAll();
     }
 
+    public void updateProject(Project project) {
+        this.projectDAO.update(project);
+    }
+
     public List<Project> getProjectListNotSynced() {
         return projectDAO.getAllNotSynced();
     }

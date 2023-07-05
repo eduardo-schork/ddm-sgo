@@ -1,0 +1,14 @@
+{
+    "name": "sgo-backend",
+    "version": "1.0.0",
+    "description": "Simple service with two routes using Express",
+    "main": "server.js",
+    "scripts": {
+        "start": "node run.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}

@@ -1,6 +1,10 @@
 package com.ddm.sgo.ui.synchronization;
 
+import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +26,7 @@ import com.ddm.sgo.model.Team;
 import com.ddm.sgo.repositories.AppointmentRepository;
 import com.ddm.sgo.repositories.ProjectRepository;
 import com.ddm.sgo.repositories.TeamRepository;
+import com.ddm.sgo.services.synchronization_service.SynchronizationService;
 import com.ddm.sgo.util.date_parser.DateParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,11 +35,16 @@ import java.util.List;
 
 public class SynchronizationQueueFragment extends Fragment {
     private Context context;
-
     private FragmentSynchronizationQueueBinding binding;
     private RecyclerView projectsRecyclerView;
     private RecyclerView appointmentsRecyclerView;
     private RecyclerView teamsRecyclerView;
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadDataOnView();
+        }
+    };
     private SwipeRefreshLayout swipeRefreshLayout;
 
     private void loadDataOnView() {
@@ -88,12 +98,25 @@ public class SynchronizationQueueFragment extends Fragment {
         teamsRecyclerView.setAdapter(teamAdapter);
     }
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public void initializeComponents() {
         FloatingActionButton createProjectButton = binding.syncQueueButton;
         createProjectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (isMyServiceRunning(SynchronizationService.class)) return;
+                Intent intent = new Intent(getContext(), SynchronizationService.class);
+                context.startService(intent);
             }
         });
 
@@ -134,12 +157,14 @@ public class SynchronizationQueueFragment extends Fragment {
         initializeComponents();
         loadDataOnView();
 
+        getActivity().registerReceiver(this.broadcastReceiver, new IntentFilter("SYNC_BROADCAST"));
         return root;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        getActivity().unregisterReceiver(broadcastReceiver);
         binding = null;
     }
 }

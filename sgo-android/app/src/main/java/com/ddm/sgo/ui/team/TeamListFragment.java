@@ -85,6 +85,12 @@ public class TeamListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        setTeamListOnView();
+        super.onResume();
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;

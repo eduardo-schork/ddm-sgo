@@ -24,8 +24,12 @@ public class TeamRepository {
         return instance;
     }
 
-    public void createProject(Team newTeam) {
+    public void createTeam(Team newTeam) {
         this.teamDAO.insertAll(newTeam);
+    }
+
+    public void updateTeam(Team team) {
+        this.teamDAO.update(team);
     }
 
     public List<Team> getTeamList() {

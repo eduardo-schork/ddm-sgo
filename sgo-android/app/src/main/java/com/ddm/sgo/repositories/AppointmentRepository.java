@@ -33,6 +33,10 @@ public class AppointmentRepository {
         this.appointmentDAO.insertAll(newAppointment);
     }
 
+    public void updateAppointment(Appointment appointment) {
+        this.appointmentDAO.update(appointment);
+    }
+
     public List<Appointment> getAppointmentList() {
         return appointmentDAO.getAll();
     }

@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.ddm.sgo.model.Appointment;
 
@@ -22,6 +23,10 @@ public interface AppointmentDAO {
 
     @Query("SELECT * FROM appointments WHERE uid = :uid LIMIT 1")
     Appointment findById(long uid);
+
+    @Update
+    void update(Appointment appointment);
+
 
     @Insert
     void insertAll(Appointment... projects);

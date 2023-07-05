@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.ddm.sgo.model.Team;
 
@@ -22,6 +23,9 @@ public interface TeamDAO {
 
     @Insert
     void insertAll(Team... users);
+
+    @Update
+    void update(Team team);
 
     @Delete
     void delete(Team user);

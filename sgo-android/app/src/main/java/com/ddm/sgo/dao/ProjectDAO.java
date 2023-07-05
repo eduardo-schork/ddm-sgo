@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.ddm.sgo.model.Project;
 
@@ -22,6 +23,9 @@ public interface ProjectDAO {
 
     @Query("SELECT * FROM projects WHERE uid = :uid LIMIT 1")
     Project findById(long uid);
+
+    @Update
+    void update(Project project);
 
     @Insert
     void insertAll(Project... projects);

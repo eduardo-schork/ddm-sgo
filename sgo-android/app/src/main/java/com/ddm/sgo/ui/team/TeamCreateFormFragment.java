@@ -42,7 +42,7 @@ public class TeamCreateFormFragment extends Fragment {
             Team newTeam = sanitizeNewTeam();
 
             TeamRepository repository = TeamRepository.getInstance(getContext());
-            repository.createProject(newTeam);
+            repository.createTeam(newTeam);
 
             ToastPort.showMessage(getContext(), "Equipe criada com sucesso!");
         } catch (Exception e) {
