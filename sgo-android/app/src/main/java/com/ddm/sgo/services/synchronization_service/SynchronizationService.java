@@ -25,6 +25,8 @@ import retrofit2.Response;
 
 public class SynchronizationService extends Service {
     HttpRequestPort httpRequestPort = HttpRequestPort.getInstance();
+    Timer serviceTimer;
+    TimerTask serviceTimerTask;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -134,31 +136,35 @@ public class SynchronizationService extends Service {
 
         boolean shouldSynchronizeData = hasProjectsToSync || hasAppointmentsToSync || hasTeamsToSync;
 
-        if (!shouldSynchronizeData) {
+        if (shouldSynchronizeData) {
+            syncronizeAppointmentData(appointmentList);
+            syncronizeProjectData(projectList);
+            syncronizeTeamData(teamList);
+        } else {
             emitFinishBroadcast();
             stopSelf();
-            return;
         }
-
-        syncronizeAppointmentData(appointmentList);
-        syncronizeProjectData(projectList);
-        syncronizeTeamData(teamList);
     }
 
     private void runServiceWithInterval() {
-        int timerDelay = 5 * 1000;
+        int delay = 0;
+        int period = 5 * 1000;
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
+        serviceTimer = new Timer();
+        serviceTimerTask = new TimerTask() {
             @Override
             public void run() {
                 startServiceCore();
             }
-        }, 0, timerDelay);
+        };
+
+        serviceTimer.scheduleAtFixedRate(serviceTimerTask, delay, period);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Toast.makeText(this, "Sincronização iniciada ", Toast.LENGTH_LONG).show();
+
         runServiceWithInterval();
 
         return START_STICKY;
@@ -166,8 +172,9 @@ public class SynchronizationService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        serviceTimer.cancel();
         Toast.makeText(this, "Sincronização terminou", Toast.LENGTH_LONG).show();
+        super.onDestroy();
     }
 
 }
