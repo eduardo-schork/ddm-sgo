@@ -32,13 +32,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:ems="10"
-            android:hint="Nome da equipe"
-            android:inputType="text">
+            android:hint="Nome da equipe">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,13 +49,14 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:ems="10"
-            android:hint="Número de funcionários"
-            android:inputType="number">
+            android:hint="Número de funcionários">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/number_of_members_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
